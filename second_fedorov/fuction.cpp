@@ -1,5 +1,20 @@
 ﻿#include "Header.h"
 
+
+void error()
+{
+	Beep(800, 150);
+	cout << "ERROR!" << endl << endl;
+	system("pause");
+}
+
+bool isdigit_r(unsigned char a) { return (a >= '0' && a <= '9'); }
+bool isalpha_r(unsigned char a)
+{
+	bool rez = ((a >= 'a' && a <= 'z') || (a >= 'A' && a <= 'Z') || a == '-');
+
+	return rez;
+}
 Uzond* create(short size)
 {
 	Uzond* arr = new Uzond[size];
@@ -70,8 +85,6 @@ string rand_data(int max)
 	}
 	return nullptr;
 }
-
-
 void show(Uzond* program, short size, short size_of_peopl)
 {
 
@@ -98,7 +111,6 @@ for (short i = 0; i < size; i++)
 	cout << endl << endl;
 }
 }
-
 Uzond* sort(Uzond* program, short size, short size_of_peopl)
 {
 	cout << endl << "Wybiesz:\n1 - posortowac za Name\n2 - posortowac za Surname\n3 - posortowac za sex\n4 - posortowac za piesel\n5 - posortowac za Year\nQ - Wyjść\n";
@@ -210,36 +222,224 @@ Uzond* sort(Uzond* program, short size, short size_of_peopl)
 	}
 	return program;
 }
+void find(Uzond* program, short size, short size_of_peopl)
+{
 
-/*
-Uzond* edit(Uzond* program, short size, short size_of_peop, short index_1, short index_2, bool menu)
+		if (program == nullptr || size == 0 || size_of_peopl == 0)
+		{
+			error();
+			return;
+		}
+
+		char* keyword = new char[MAXLINE]; keyword[0] = '\0';
+
+		COORD enter, hat;
+
+		system("cls");
+		cout << " Esc - Wejscie" << endl << endl;
+		cout << "Szukaj: ";
+		enter = getCursorPosition();
+
+		cout << endl << " #   " stru << endl;
+		hat = getCursorPosition();
+
+		COORD temp_pos;
+		short len = 0;
+
+		do
+		{
+			//Вводим ключевое слово для поиска.
+			{
+				int i = 0;
+				do
+				{
+
+					if (!stredit(keyword, MAXLINE, enter.X, enter.Y, len, false)) return;
+					len = (short)strlen(keyword);
+
+					for (i = 0; i < len; i++)
+					{
+						if (!(isdigit_r(keyword[i]) || isalpha_r(keyword[i]))) break;
+					}
+
+				} while (i != len || len == 0);
+			}
+
+			// Выводим результаты. 
+
+			setCursorPosition(hat.X, hat.Y);
+
+			//Очищаем предыдущие результаты поиска.
+			for (int i = 0; i < size; i++)
+			{
+				temp_pos = getCursorPosition();
+				Clear(temp_pos.X, temp_pos.Y + i);
+			}
+			setCursorPosition(hat.X, hat.Y);
+
+			//Выводим новые результаты поиска
+			for (short l = 0; l < size_of_peopl; l++)
+			{
+				cout << "Rezultat o " << l + 1 << " linii" << endl;
+				for (short i = 0; i < size; i++)
+				{
+					if (strstr_lower(stringToArrChar(program[l].people[i].Name).data(), keyword)
+						|| strstr_lower(stringToArrChar(program[l].people[i].Surname).data(), keyword)
+						|| strstr_lower(stringToArrChar(program[l].people[i].piesel).data(), keyword)
+						|| strstr_lower(stringToArrChar(program[l].people[i].Year).data(), keyword)
+						|| strstr_lower(stringToArrChar(program[l].people[i].sex).data(), keyword))
+
+					{
+						cout << left << setw(3) << i + 1 << "  ";
+						print_find(stringToArrChar(program[l].people[i].Name).data(), MAXLINE, keyword, MAXLINE, Red);
+						print_find(stringToArrChar(program[l].people[i].Surname).data(), MAXLINE, keyword, MAXLINE, Red);
+						print_find(stringToArrChar(program[l].people[i].Year).data(), MAXLINE, keyword, MAXLINE, Red);
+						print_find(stringToArrChar(program[l].people[i].piesel).data(), MAXLINE, keyword, MAXLINE, Red);
+						print_find(stringToArrChar(program[l].people[i].sex).data(), MAXLINE, keyword, MAXLINE, Red);
+
+						cout << endl;
+
+					}
+				}
+				cout << endl;
+
+			}
+		} while (true); //Пока не нажата Esc.
+
+		delete[] keyword; keyword = nullptr;
+	
+}
+char* strstr_lower(char* str_a, char* str_b)
+{
+	/*Поиск подстроки в строке без учета регистра.*/
+
+	if (str_a == nullptr || str_b == nullptr)
+		return nullptr;
+
+	for (int i = 0;; i++)
+	{
+		if (str_a[i] == '\0') return nullptr;
+
+		for (int j = 0, k = i;; j++, k++)
+		{
+			if (str_b[j] == '\0') return (str_a + i);
+			if (tolower(str_a[k]) != tolower(str_b[j])) break;
+		}
+	}
+}
+vector<char> stringToArrChar(const string& str) {
+	vector<char> char_array(str.begin(), str.end());
+	char_array.push_back('\0');
+	return char_array;
+}
+Uzond* edit(Uzond* program, short index_1, short index_2)
 {
 	system("cls");
 
-	if (index_1 < 0 || index_2 >= size || index_1 >= size_of_peop || index_2 < 0)
+	if (index_1 < 0 || index_2 < 0)
 	{
-		//error();
+		error();
 		return program;
 	}
-	do
-	{
-		system("cls");
-		cout << "Urzond #" << index_1 << "*" << index_2 << endl << endl;
-		cout << "Enter name: ";
-		stredit(program[index_1].people[index_2].Name, MAXLINE, 12, 2);
+	char line[MAXLINE * 5];
+	string name, surname, Year, Piesel, Sex;
+	cout << "Wstępne dane:" << endl;
+	cout << MANIP << program[index_1].people[index_2].Name << " " << MANIP << program[index_1].people[index_2].Surname << " " << MANIP << program[index_1].people[index_2].Year << " " << MANIP << program[index_1].people[index_2].piesel << " " << MANIP << program[index_1].people[index_2].sex << "  ";
+	do {
+		cout << "Enter name; surname; age; city; occupation: ";
+		cin.getline(line, MAXLINE);
 
-	} while (strlen(program[index_1].people[index_2].Name) == 0);
-	do
-	{
-		system("cls");
-		cout << "Urzond #" << index_1 << "*" << index_2 << endl << endl;
-		cout << "Enter numer: ";
-		stredit(program[index_1].people[index_2].Surname, MAXLINE, 13, 2);
+		name = strtok(line, "; ");
+		surname = strtok(nullptr, "; ");
+		Year = strtok(nullptr, "; ");
+		Piesel = strtok(nullptr, "; ");
+		Sex = strtok(nullptr, "; ");
 
-	} while (strlen(program[index_1].people[index_2].Surname) == 0);
+		bool name_is_alpha = true, surname_is_alpha = true, sex_is_alpha = true, Year_is_digit = true, Piesel_is_digit = Piesel.size() == 12;
+		for (char c : name)
+			if (!isalpha_r(c)) {
+				name_is_alpha = false;
+				break;
+			}
+		for (char c : surname)
+			if (!isalpha_r(c)) {
+				surname_is_alpha = false;
+				break;
+			}
+		for (char c : Sex)
+			if (!isalpha_r(c)) {
+				sex_is_alpha = false;
+				break;
+			}
+		for (char c : Year) {
+			if (!isdigit_r(c)) {
+				Year_is_digit = false;
+				break;
+			}
+		}
+		for (char c : Piesel)
+			if (!isdigit_r(c)) {
+				Piesel_is_digit = false;
+				break;
+			}
 
-	if (menu) cout << "Edited!" << endl;
+		if (!name_is_alpha || !surname_is_alpha || !sex_is_alpha || !Year_is_digit || stoi(Year) < 1900 || stoi(Year) > 2023 || !Piesel_is_digit)
+		{
+			error();
+			return program;
+		}
 
+	} while (name.empty() || surname.empty() || Year.empty() || Piesel.empty() || Sex.empty());
+
+	program[index_1].people[index_2].Name = name;
+	program[index_1].people[index_2].Name = name;
+	program[index_1].people[index_2].Surname = surname;
+	program[index_1].people[index_2].Year = Year;
+	program[index_1].people[index_2].piesel = Piesel;
+	program[index_1].people[index_2].sex = Sex;
 	return program;
 }
-*/
+
+
+void print_find(char* str, short str_size, char* keyword, short key_size, int text, int back)
+{
+	if (str == nullptr || keyword == nullptr) return;
+
+	int str_len = strlen(str);
+	int key_len = strlen(keyword);
+
+	if (str_len > str_size || str_len < 0 || key_len > key_size || key_len < 0) return;
+
+	COORD start, cursor;
+
+	start = getCursorPosition();
+	cout << left << setw(str_size) << str;
+	cursor = getCursorPosition();
+	showcursor(false);
+
+	COLOR DefColor = GetColor();
+	COLOR FindColor;
+
+	FindColor.text = (text == -1) ? DefColor.text : text;
+	FindColor.back = (back == -1) ? DefColor.back : back;
+
+	char* ptr = strstr_lower(str, keyword);
+	short index = 0;
+
+	while (ptr != nullptr)
+	{
+		index = (int)(ptr - str);                    //Считаем позицию слова в строке и 
+		setCursorPosition(start.X + index, start.Y); //переходим к позиции слова.
+
+		// Выводим слово с форматом цвета.
+		SetColor(FindColor);
+		for (int j = 0; j < key_len; j++) cout << str[index + j];
+		SetColor(DefColor);
+
+		//Ищем далее.
+		ptr = strstr_lower(ptr + key_len, keyword);
+	}
+
+	setCursorPosition(cursor.X, cursor.Y);
+	showcursor(true);
+}

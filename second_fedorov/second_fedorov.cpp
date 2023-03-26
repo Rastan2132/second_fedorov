@@ -2,9 +2,9 @@
 
 int main()
 {
-	system("color F0");
 	bool work = 1;
 	short size = 0;
+	short urz_num, p_num;
 	size = rand() % 10 + 1;
 	short size_of_peopl = rand() % 10 + 1;
 	Uzond* program = nullptr;
@@ -40,13 +40,23 @@ int main()
 	//		peoples = del(peoples, &size);
 			break;
 		case (101):
-	//		peoples = edit(peoples, size, select(peoples, size), true);
+
+			do {
+
+				cout << "wprowadź numer urzendu i numer osoby" << endl;
+				cin >> urz_num >> p_num;
+				if (urz_num > 0 && p_num > 0 && urz_num <= size && p_num <= size_of_peopl)
+					break;
+				error();
+			
+			} while (true);
+			program = edit(program, urz_num-1, p_num-1);
 			break;
 		case (115):
 			sort(program,  size, size_of_peopl);
 			break;
 		case (121):
-	//		find(peoples, size);
+			find(program, size, size_of_peopl);
 			break;
 		}
 	} while (work);

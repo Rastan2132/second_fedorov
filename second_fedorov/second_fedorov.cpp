@@ -24,20 +24,11 @@ int main()
 			work = false;
 			break;
 		case (97):
-			cout << "Chcesz dodać sam czy losowo (S lub R)" << endl;
-			switch (_getch())
-			{
-			case (115):
-	//			peoples = add(peoples, &size);
-				break;
-			case (114):
-	//			peoples = resize(peoples, &size, size + 1);
-	//			peoples = initRand(peoples, NAMES, SURNAMES, size - 1);
-				break;
-			}
+
+			program= add( program, &size, &size_of_peopl, NAMES, SURNAMES, NAMES_of_Uzond);
 			break;
 		case (100):
-	//		peoples = del(peoples, &size);
+			program = dell(program, &size, &size_of_peopl);
 			break;
 		case (101):
 

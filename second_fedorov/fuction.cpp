@@ -68,7 +68,7 @@ string rand_data(int max)
 	}
 	else if (max == 12)
 	{
-		long number = 0;
+		unsigned int number = 0;
 		for (int i = 0; i < 12; i++) {
 			number = number * 10 + rand() % 10;
 		}
@@ -348,7 +348,7 @@ Uzond* edit(Uzond* program, short index_1, short index_2)
 	cout << endl;
 	
 	bool valid_input = false;
-	cout << "Enter name; surname; age; city; occupation: ";
+	cout << "Podaj Name Surname Year Pesel i sex: ";
 	while (!valid_input) {
 
 		string line;
@@ -455,10 +455,148 @@ void print_find(char* str, short str_size, char* keyword, short key_size, int te
 	showcursor(true);
 }
 
-Uzond* add(Uzond* program, short* size, short* size_of_peopl) 
+Uzond* add(Uzond* program, short* size, short* size_of_peopl, vector<string> arr_name, vector<string> arr_suname, vector<string>arr_of_name_urzant)
 {
+	cout << "Сhcesz dodać urzond lub osobę(u lub o)" << endl;
+	Uzond* program_n = nullptr;
+	switch (_getch())
+	{
+	case (117):
+		(*size)++;
+
+		
+		program_n = new Uzond[*size];
+		for (int j = 0; j < *size; j++)
+		{
+			program_n[j].people = new Users[*size_of_peopl];
+		}
+		for (short l = 0; l < *size-1; l++)
+		{
+			program_n[l].Name = program[l].Name;
+			program_n[l].Numer = program[l].Numer;
+			for (short i = 0; i < *size_of_peopl; i++)
+			{
+				program_n[l].people[i].Name = program[l].people[i].Name;
+				program_n[l].people[i].Surname = program[l].people[i].Surname;
+				program_n[l].people[i].sex = program[l].people[i].sex;
+				program_n[l].people[i].piesel = program[l].people[i].piesel;
+				program_n[l].people[i].Year = program[l].people[i].Year;
+			}
+		}
+		
+		program_n[*size-1].Numer = rand_data(num_);
+		program_n[*size-1].Name = arr_of_name_urzant[rand() % 4];
+
+		for (int j = 0; j < *size_of_peopl; j++) {
+			program_n[*size-1].people[j].sex = rand_data(sex_);
+			program_n[*size - 1].people[j].Name = arr_name[rand_data(program_n[*size - 1].people[j].sex)];
+			program_n[*size - 1].people[j].Surname = arr_suname[rand_data(program_n[*size - 1].people[j].sex)];
+			program_n[*size - 1].people[j].Year = rand_data(year_);
+			program_n[*size - 1].people[j].piesel = rand_data(piesel_);
+		}
+		program = program_n;
+		break;
+	case (111):
+		Uzond* program_n = nullptr;
+			(*size_of_peopl)++;
 
 
+			program_n = new Uzond[*size];
+			for (int j = 0; j < *size; j++)
+			{
+				program_n[j].people = new Users[*size_of_peopl];
+			}
+			for (short l = 0; l < *size; l++)
+			{
+				program_n[l].Name = program[l].Name;
+				program_n[l].Numer = program[l].Numer;
+				for (short i = 0; i < *size_of_peopl-1; i++)
+				{
+					program_n[l].people[i].Name = program[l].people[i].Name;
+					program_n[l].people[i].Surname = program[l].people[i].Surname;
+					program_n[l].people[i].sex = program[l].people[i].sex;
+					program_n[l].people[i].piesel = program[l].people[i].piesel;
+					program_n[l].people[i].Year = program[l].people[i].Year;
+				}
+			}
+
+
+			for (int j = 0; j < *size; j++) {
+				program_n[j].people[*size_of_peopl-1].sex = rand_data(sex_);
+				program_n[j].people[*size_of_peopl - 1].Name = arr_name[rand_data(program_n[j].people[*size_of_peopl - 1].sex)];
+				program_n[j].people[*size_of_peopl - 1].Surname = arr_suname[rand_data(program_n[j].people[*size_of_peopl - 1].sex)];
+				program_n[j].people[*size_of_peopl - 1].Year = rand_data(year_);
+				program_n[j].people[*size_of_peopl - 1].piesel = rand_data(piesel_);
+			}
+			program = program_n;
+			break;
+	}
+
+	return program;
+}
+Uzond* dell(Uzond* program, short* size, short* size_of_peopl)
+{
+	cout << "Usunąć użytkownika lub użytkownika? (u lub o)" << endl;
+	switch (_getch())
+	{
+	case (117): 
+	{
+		if (*size <= 0) {
+			error();
+		}
+
+		cout << "Wybierz numer Uzond, który chcesz usunąć (1 - " << *size << "):" << endl;
+		int num = 0;
+		cin >> num;
+		if (num < 1 || num > *size) {
+			error();
+		}
+
+		(*size)--;
+		Uzond* program_n = new Uzond[*size];
+		for (int i = 0, j = 0; i < *size + 1; i++) {
+			if (i != num - 1) {
+				program_n[j] = program[i];
+				j++;
+			}
+		}
+		delete[] program[num - 1].people;
+		program = program_n;
+		break;
+	}
+
+	case (111): // удаление User
+	{
+		if (*size_of_peopl <= 0) {
+			error();
+		}
+
+		cout << "Wybierz numer użytkownika, którego chcesz usunąć(1 - " << *size_of_peopl << "):" << endl;
+		int num = 0;
+		cin >> num;
+		if ( num < 1 || num > *size_of_peopl) {
+			error();
+		}
+
+		(*size_of_peopl)--;
+		Uzond* program_n = new Uzond[*size];
+		for (int i = 0; i < *size; i++) {
+		
+				program_n[i] = program[i];
+			
+				program_n[i].people = new Users[*size_of_peopl];
+				for (int j = 0, k = 0; j < *size_of_peopl + 1; j++) {
+					if (j != num - 1) {
+						program_n[i].people[k] = program[i].people[j];
+						k++;
+					}
+				}
+			
+		}
+		program = program_n;
+		break;
+	}
+	}
 
 	return program;
 }

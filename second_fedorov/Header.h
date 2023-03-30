@@ -63,7 +63,7 @@ Uzond* create(short size);
 Uzond* initRand(Uzond* program, short size, short size_of_peopl, vector<string> arr_name, vector<string> arr_suname, vector<string>arr_of_name_urzant);
 void show(Uzond* program, short size, short size_of_peopl);
 void find(Uzond* program, short size, short size_of_peopl);
-Uzond* add(Uzond* program , short * size, short* size_of_peopl);
+Uzond* add(Uzond* program, short* size, short* size_of_peopl, vector<string> arr_name, vector<string> arr_suname, vector<string>arr_of_name_urzant);
 char* strstr_lower(char* str_a, char* str_b);
 int rand_data(string sex);								/// от 0 до 9 муж. от 10 до 19 жен
 string rand_data(int max);
@@ -71,7 +71,9 @@ Uzond* sort(Uzond* program, short size, short size_of_peopl);
 bool isalpha_r(unsigned char a);
 bool isdigit_r(unsigned char a);
 vector<char> stringToArrChar(const string& str);
-Uzond* edit(Uzond* program, short index_1, short index_2);
+Uzond* edit(Uzond* program, short index_1, short index_2); 
+Uzond* dell(Uzond* program, short* size, short* size_of_peopl);
+
 
 
 COORD getCursorPosition(void);

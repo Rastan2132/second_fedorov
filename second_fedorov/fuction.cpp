@@ -104,7 +104,7 @@ for (short i = 0; i < size; i++)
 	for (short j = 0; j < size_of_peopl; j++)
 	{
 		
-		cout << MANIP << program[i].people[j].Name << " " << MANIP << program[i].people[j].Surname << " " << MANIP << program[i].people[j].Year << " " << MANIP << program[i].people[j].piesel << " " << MANIP << program[i].people[j].sex << "  ";
+		cout<< right << setw(3) << setfill('0') << j + 1 << setfill(' ') << " "<< MANIP << program[i].people[j].Name << " " << MANIP << program[i].people[j].Surname << " " << MANIP << program[i].people[j].Year << " " << MANIP << program[i].people[j].piesel << " " << MANIP << program[i].people[j].sex << "  ";
 		cout << endl<<"    ";
 	}
 	
@@ -278,10 +278,10 @@ void find(Uzond* program, short size, short size_of_peopl)
 			setCursorPosition(hat.X, hat.Y);
 
 			//Выводим новые результаты поиска
-			for (short l = 0; l < size_of_peopl; l++)
+			for (short l = 0; l < size; l++)
 			{
 				cout << "Rezultat o " << l + 1 << " linii" << endl;
-				for (short i = 0; i < size; i++)
+				for (short i = 0; i < size_of_peopl; i++)
 				{
 					if (strstr_lower(stringToArrChar(program[l].people[i].Name).data(), keyword)
 						|| strstr_lower(stringToArrChar(program[l].people[i].Surname).data(), keyword)
@@ -335,68 +335,79 @@ vector<char> stringToArrChar(const string& str) {
 Uzond* edit(Uzond* program, short index_1, short index_2)
 {
 	system("cls");
-
+	ShowCursor(1);
 	if (index_1 < 0 || index_2 < 0)
 	{
 		error();
 		return program;
 	}
-	char line[MAXLINE * 5];
-	string name, surname, Year, Piesel, Sex;
+	string line;
+	string name="", surname= " ", Year=" ", Piesel=" ", Sex=" ";
 	cout << "Wstępne dane:" << endl;
 	cout << MANIP << program[index_1].people[index_2].Name << " " << MANIP << program[index_1].people[index_2].Surname << " " << MANIP << program[index_1].people[index_2].Year << " " << MANIP << program[index_1].people[index_2].piesel << " " << MANIP << program[index_1].people[index_2].sex << "  ";
-	do {
-		cout << "Enter name; surname; age; city; occupation: ";
-		cin.getline(line, MAXLINE);
+	cout << endl;
+	
+	bool valid_input = false;
+	cout << "Enter name; surname; age; city; occupation: ";
+	while (!valid_input) {
 
-		name = strtok(line, "; ");
-		surname = strtok(nullptr, "; ");
-		Year = strtok(nullptr, "; ");
-		Piesel = strtok(nullptr, "; ");
-		Sex = strtok(nullptr, "; ");
+		string line;
+		
+		getline(cin, line);
+		name = line.substr(0, line.find_first_of(";"));
+		line = line.substr(line.find_first_of(";") + 1);
+		surname = line.substr(0, line.find_first_of(";"));
+		line = line.substr(line.find_first_of(";") + 1);
+		Year = line.substr(0, line.find_first_of(";"));
+		line = line.substr(line.find_first_of(";") + 1);
+		Piesel = line.substr(0, line.find_first_of(";"));
+		line = line.substr(line.find_first_of(";") + 1);
+		Sex = line.substr(0, line.find_first_of(";"));
 
 		bool name_is_alpha = true, surname_is_alpha = true, sex_is_alpha = true, Year_is_digit = true, Piesel_is_digit = Piesel.size() == 12;
-		for (char c : name)
-			if (!isalpha_r(c)) {
-				name_is_alpha = false;
-				break;
+		if (line.size() > 1) {
+			for (char c : name)
+				if (!isalpha_r(c)) {
+					name_is_alpha = false;
+					break;
+				}
+			for (char c : surname)
+				if (!isalpha_r(c)) {
+					surname_is_alpha = false;
+					break;
+				}
+			for (char c : Sex)
+				if (!isalpha_r(c)) {
+					sex_is_alpha = false;
+					break;
+				}
+			for (char c : Year) {
+				if (!isdigit_r(c)) {
+					Year_is_digit = false;
+					break;
+				}
 			}
-		for (char c : surname)
-			if (!isalpha_r(c)) {
-				surname_is_alpha = false;
-				break;
+			for (char c : Piesel)
+				if (!isdigit_r(c)) {
+					Piesel_is_digit = false;
+					break;
+				}
+
+			if (!name_is_alpha || !surname_is_alpha || !sex_is_alpha || !Year_is_digit || !Piesel_is_digit)
+			{
+				error();
 			}
-		for (char c : Sex)
-			if (!isalpha_r(c)) {
-				sex_is_alpha = false;
-				break;
-			}
-		for (char c : Year) {
-			if (!isdigit_r(c)) {
-				Year_is_digit = false;
-				break;
+			else {
+				program[index_1].people[index_2].Name = name;
+				program[index_1].people[index_2].Surname = surname;
+				program[index_1].people[index_2].Year = Year;
+				program[index_1].people[index_2].piesel = Piesel;
+				program[index_1].people[index_2].sex = Sex;
+				valid_input = true;
 			}
 		}
-		for (char c : Piesel)
-			if (!isdigit_r(c)) {
-				Piesel_is_digit = false;
-				break;
-			}
-
-		if (!name_is_alpha || !surname_is_alpha || !sex_is_alpha || !Year_is_digit || stoi(Year) < 1900 || stoi(Year) > 2023 || !Piesel_is_digit)
-		{
-			error();
-			return program;
-		}
-
-	} while (name.empty() || surname.empty() || Year.empty() || Piesel.empty() || Sex.empty());
-
-	program[index_1].people[index_2].Name = name;
-	program[index_1].people[index_2].Name = name;
-	program[index_1].people[index_2].Surname = surname;
-	program[index_1].people[index_2].Year = Year;
-	program[index_1].people[index_2].piesel = Piesel;
-	program[index_1].people[index_2].sex = Sex;
+	}
+	ShowCursor(0);
 	return program;
 }
 
@@ -442,4 +453,12 @@ void print_find(char* str, short str_size, char* keyword, short key_size, int te
 
 	setCursorPosition(cursor.X, cursor.Y);
 	showcursor(true);
+}
+
+Uzond* add(Uzond* program, short* size, short* size_of_peopl) 
+{
+
+
+
+	return program;
 }

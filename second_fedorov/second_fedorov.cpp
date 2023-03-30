@@ -12,7 +12,7 @@ int main()
 	vector<string> NAMES = { "Alexander","Maxim","Dmitry","Sergei","Ivan","Anna","Maria","Olga","Elena","Natalia" };
 	vector<string> SURNAMES = { "Ivanov","Petrov","Sidorov","Smirnov","Kuznetsov","Ivanova","Petrova","Sidorova","Smirnova","Kuznetsova" };
 	vector<string>NAMES_of_Uzond = { "Urzad Pracy","Urzad Spraw","Urzad Skarbowy","Urzad s. cywilnego" };
-
+	ShowCursor(0);
 	program = initRand(program, size, size_of_peopl, NAMES, SURNAMES, NAMES_of_Uzond);
 	do
 	{

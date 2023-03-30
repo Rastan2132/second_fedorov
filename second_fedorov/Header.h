@@ -10,6 +10,7 @@
 #include <ctype.h>
 #include <windows.h>
 #include <vector>
+#include <sstream>
 
 using namespace std;
 
@@ -21,7 +22,7 @@ using namespace std;
 
 
 #define MENU "| q-Zamkac |  a-ADD uzytkownika  |  d-Usuwanie uzytkownika |  e-Redaktor |  s-Sortowac |  y-Szukaj |" 
-#define stru "#   Name                 Surname	       Year		   Piesel 	       Sex"
+#define stru "#       Name                 Surname	          Year		       Piesel 	       Sex"
 
 
 #define MANIP setw(MAXLINE) <<  left 
@@ -62,7 +63,7 @@ Uzond* create(short size);
 Uzond* initRand(Uzond* program, short size, short size_of_peopl, vector<string> arr_name, vector<string> arr_suname, vector<string>arr_of_name_urzant);
 void show(Uzond* program, short size, short size_of_peopl);
 void find(Uzond* program, short size, short size_of_peopl);
-
+Uzond* add(Uzond* program , short * size, short* size_of_peopl);
 char* strstr_lower(char* str_a, char* str_b);
 int rand_data(string sex);								/// от 0 до 9 муж. от 10 до 19 жен
 string rand_data(int max);

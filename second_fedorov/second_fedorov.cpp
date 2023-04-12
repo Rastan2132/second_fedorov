@@ -8,15 +8,15 @@ int main()
 	size = rand() % 10 + 1;
 	short size_of_peopl = rand() % 10 + 1;
 	Uzond* program = nullptr;
-	program = create(size);
+	create(program,size, size_of_peopl);
 	vector<string> NAMES = { "Alexander","Maxim","Dmitry","Sergei","Ivan","Anna","Maria","Olga","Elena","Natalia" };
 	vector<string> SURNAMES = { "Ivanov","Petrov","Sidorov","Smirnov","Kuznetsov","Ivanova","Petrova","Sidorova","Smirnova","Kuznetsova" };
 	vector<string>NAMES_of_Uzond = { "Urzad Pracy","Urzad Spraw","Urzad Skarbowy","Urzad s. cywilnego" };
 	ShowCursor(0);
-	program = initRand(program, size, size_of_peopl, NAMES, SURNAMES, NAMES_of_Uzond);
+	initRand(program, size, size_of_peopl, NAMES, SURNAMES, NAMES_of_Uzond);
 	do
 	{
-		 show( program,  size,  size_of_peopl);
+		show(program, size, size_of_peopl);
 
 		switch (_getch())
 		{
@@ -24,11 +24,10 @@ int main()
 			work = false;
 			break;
 		case (97):
-
-			program= add( program, &size, &size_of_peopl, NAMES, SURNAMES, NAMES_of_Uzond);
+ add(program, &size, &size_of_peopl, NAMES, SURNAMES, NAMES_of_Uzond);
 			break;
 		case (100):
-			program = dell(program, &size, &size_of_peopl);
+			dell(program, &size,&size_of_peopl);
 			break;
 		case (101):
 
@@ -41,10 +40,10 @@ int main()
 				error();
 			
 			} while (true);
-			program = edit(program, urz_num-1, p_num-1);
+			edit(program, urz_num-1, p_num-1);
 			break;
 		case (115):
-			sort(program,  size, size_of_peopl);
+			sort(program, size, size_of_peopl);
 			break;
 		case (121):
 			find(program, size, size_of_peopl);

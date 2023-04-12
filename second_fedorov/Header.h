@@ -37,7 +37,7 @@ struct Users
 };
 struct Uzond
 {
-	Users *people;
+	Users **people;
 	string Name;
 	string Numer;
 	int size_Of_arr_peopls;
@@ -58,21 +58,21 @@ enum SpecialKeys { Left = 75, Right = 77, End = 79, Home = 71, Esc = 27, Del = 8
 
 
 
-void error();
-Uzond* create(short size);
-Uzond* initRand(Uzond* program, short size, short size_of_peopl, vector<string> arr_name, vector<string> arr_suname, vector<string>arr_of_name_urzant);
+void error(); 
+void create(Uzond*& arr, short size, short size_of_peopl);
+void initRand(Uzond*& program, short size, short size_of_peopl, vector<string> arr_name, vector<string> arr_suname, vector<string>arr_of_name_urzant);
 void show(Uzond* program, short size, short size_of_peopl);
-void find(Uzond* program, short size, short size_of_peopl);
-Uzond* add(Uzond* program, short* size, short* size_of_peopl, vector<string> arr_name, vector<string> arr_suname, vector<string>arr_of_name_urzant);
+void find(Uzond*& program, short& size, short& size_of_peopl);
+void add(Uzond*& program, short* size, short* size_of_peopl, vector<string> arr_name, vector<string> arr_suname, vector<string>arr_of_name_urzant);
 char* strstr_lower(char* str_a, char* str_b);
 int rand_data(string sex);								/// от 0 до 9 муж. от 10 до 19 жен
 string rand_data(int max);
-Uzond* sort(Uzond* program, short size, short size_of_peopl);
+void sort(Uzond*& program, short size, short size_of_peopl);
 bool isalpha_r(unsigned char a);
 bool isdigit_r(unsigned char a);
 vector<char> stringToArrChar(const string& str);
-Uzond* edit(Uzond* program, short index_1, short index_2); 
-Uzond* dell(Uzond* program, short* size, short* size_of_peopl);
+void edit(Uzond*& program, short index_1, short index_2);
+void dell(Uzond*& program, short* size, short* size_of_peopl);
 
 
 

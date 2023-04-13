@@ -24,7 +24,7 @@ int main()
 			work = false;
 			break;
 		case (97):
- add(program, &size, &size_of_peopl, NAMES, SURNAMES, NAMES_of_Uzond);
+			add(program, &size, &size_of_peopl, NAMES, SURNAMES, NAMES_of_Uzond);
 			break;
 		case (100):
 			dell(program, &size,&size_of_peopl);

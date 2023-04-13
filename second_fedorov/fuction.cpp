@@ -308,6 +308,7 @@ char* strstr_lower(char* str_a, char* str_b)
 	if (str_a == nullptr || str_b == nullptr)
 		return nullptr;
 
+
 	for (int i = 0;; i++)
 	{
 		if (str_a[i] == '\0') return nullptr;

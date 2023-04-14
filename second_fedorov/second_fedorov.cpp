@@ -22,6 +22,7 @@ int main()
 		{
 		case (113):
 			work = false;
+			clear(program,  size,size_of_peopl);
 			break;
 		case (97):
 			add(program, &size, &size_of_peopl, NAMES, SURNAMES, NAMES_of_Uzond);

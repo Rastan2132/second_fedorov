@@ -73,7 +73,7 @@ bool isdigit_r(unsigned char a);
 vector<char> stringToArrChar(const string& str);
 void edit(Uzond*& program, short index_1, short index_2);
 void dell(Uzond*& program, short* size, short* size_of_peopl);
-
+void clear(Uzond* program, short size, short size_Of_arr_peopl);
 
 
 COORD getCursorPosition(void);
@@ -90,3 +90,6 @@ void print_find(char* str, short str_size, char* keyword, short key_size, int te
 
 void DeleteCh(char* str, int& cursor, int& term);
 void InsertCh(char* str, int buffer_size, int& cursor, int& term, char symb);
+
+
+	

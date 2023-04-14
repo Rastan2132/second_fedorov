@@ -554,3 +554,17 @@ void dell(Uzond*& program, short* size, short* size_of_peopl) {
 	}
 	}
 }
+
+
+void clear(Uzond* program, short size,short size_Of_arr_peopl)
+{
+	for (int i = 0; i < size; i++) {
+		if (program[i].people != nullptr) {
+			for (int j = 0; j < size_Of_arr_peopl; j++) {
+				delete program[i].people[j];
+			}
+			delete[] program[i].people;
+		}
+	}
+	delete[] program;
+}
